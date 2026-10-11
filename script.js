@@ -6,8 +6,8 @@ document.getElementById('copy-email').addEventListener('click', async () => {
   setTimeout(() => { status.textContent = ''; }, 5000);
 });
 const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
-const motionButton = document.querySelector('.motion-toggle');
-let paused = false;
+
+
 const revealTargets = document.querySelectorAll('.section-heading, .about-grid > div, .expertise-row, .contact-heading, .contact-bottom, .story-text, .story-caption');
 if ('IntersectionObserver' in window) {
   const observer = new IntersectionObserver(entries => {
@@ -23,7 +23,7 @@ function renderScroll() {
   ticking = false;
   const maximum = document.documentElement.scrollHeight - innerHeight;
   document.documentElement.style.setProperty('--scroll-progress', maximum > 0 ? scrollY / maximum : 0);
-  const motionEnabled = !paused && !reducedMotion.matches;
+  const motionEnabled = !reducedMotion.matches;
   portrait.style.setProperty('--portrait-y', motionEnabled && innerWidth > 700 ? `${Math.min(scrollY * .085, 45)}px` : '0px');
   projects.forEach((card, index) => {
     const next = projects[index + 1];
@@ -33,13 +33,7 @@ function renderScroll() {
   });
 }
 function requestScroll() { if (!ticking) { ticking = true; requestAnimationFrame(renderScroll); } }
-motionButton.addEventListener('click', () => {
-  paused = !paused;
-  document.body.classList.toggle('motion-paused', paused);
-  motionButton.setAttribute('aria-pressed', String(paused));
-  motionButton.textContent = paused ? 'Resume motion' : 'Pause motion';
-  requestScroll();
-});
+
 addEventListener('scroll', requestScroll, { passive: true });
 addEventListener('resize', requestScroll, { passive: true });
 reducedMotion.addEventListener('change', requestScroll);
