@@ -37,6 +37,19 @@ for (const project of window.portfolioProjects || []) {
   card.classList.add('project-live');
   card.querySelector('.preview-label').textContent = 'SELECTED PROJECT / ' + String(project.slot).padStart(2, '0');
 }
+// Each project gets scroll space for the wide-preview-to-details transition.
+const projectScenes = projects.map(card => {
+  const scene = document.createElement('div');
+  scene.className = 'project-scene';
+  card.before(scene);
+  scene.append(card);
+  const body = document.createElement('div');
+  body.className = 'project-body';
+  card.append(body);
+  ['.project-art', '.project-info', '.project-note'].forEach(selector => body.append(card.querySelector(selector)));
+  return scene;
+});
+document.body.classList.add('project-motion-ready');
 let ticking = false;
 function renderScroll() {
   ticking = false;
@@ -45,15 +58,15 @@ function renderScroll() {
   const motionEnabled = !reducedMotion.matches;
   portrait.style.setProperty('--portrait-y', motionEnabled && innerWidth > 700 ? `${Math.min(scrollY * .085, 45)}px` : '0px');
   projects.forEach((card, index) => {
-    const mobile = innerWidth <= 700;
-    const stickyTop = Math.min(96 + index * 12, innerHeight - card.offsetHeight - 20);
+    projectScenes[index].style.setProperty('--project-height', `${card.offsetHeight}px`);
+    const stickyTop = Math.min(innerWidth <= 700 ? 92 : 110, innerHeight - card.offsetHeight - 20);
     card.style.setProperty('--project-top', `${stickyTop}px`);
-    const next = projects[index + 1];
-    if (!motionEnabled || !next) { card.style.transform = ''; card.style.setProperty('--project-scale', '1'); return; }
-    const progress = Math.max(0, Math.min(1, (innerHeight * .72 - next.getBoundingClientRect().top) / (innerHeight * .55)));
-    const scale = 1 - progress * (mobile ? .025 : .035);
-    card.style.setProperty('--project-scale', String(scale));
-    card.style.transform = `scale(${scale})`;
+    const scene = projectScenes[index];
+    const travel = Math.max(1, scene.offsetHeight - card.offsetHeight);
+    const progress = motionEnabled ? Math.max(0, Math.min(1, (stickyTop - scene.getBoundingClientRect().top) / (travel * .8))) : 1;
+    const eased = progress * progress * (3 - 2 * progress);
+    card.style.setProperty('--project-reveal', String(eased));
+    card.style.setProperty('--project-details', String(Math.max(0, Math.min(1, (eased - .15) / .65))));
   });
 }
 function requestScroll() { if (!ticking) { ticking = true; requestAnimationFrame(renderScroll); } }
