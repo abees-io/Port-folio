@@ -60,6 +60,13 @@ for (const project of window.portfolioProjects || []) {
   } catch {
     card.classList.remove('project-live');
     note.textContent = 'Project showcase coming soon · Concept preview';
+    const linkedArt = card.querySelector('a.project-art');
+    if (linkedArt) {
+      const preview = document.createElement('div');
+      preview.className = linkedArt.className;
+      preview.append(...linkedArt.childNodes);
+      linkedArt.replaceWith(preview);
+    }
     continue;
   }
 
@@ -75,89 +82,46 @@ for (const project of window.portfolioProjects || []) {
   card.querySelector('.preview-label').textContent = `SELECTED PROJECT / ${String(project.slot).padStart(2, '0')}`;
 }
 
-// Cache project elements once. Layout measurements run on resize, not each scroll.
-const projects = cards.map(card => {
-  const scene = document.createElement('div');
-  scene.className = 'project-scene';
-  card.before(scene);
-  scene.append(card);
-
-  const body = document.createElement('div');
-  body.className = 'project-body';
-  card.append(body);
-  ['.project-art', '.project-info', '.project-note'].forEach(selector => {
-    body.append(card.querySelector(selector));
-  });
-  const description = card.querySelector('.project-description');
-  if (description) {
-    body.append(description);
-    card.classList.add('project-with-description');
-  }
-  return { card, scene, body, description, top: 0, travel: 1 };
-});
-document.body.classList.add('project-motion-ready');
-
-let framePending = false;
-let layoutDirty = true;
-
-function measureProjects() {
-  const minimumHeight = mobileLayout.matches ? 360 : 380;
-  projects.forEach(project => {
-    const descriptionHeight = project.description?.offsetHeight || 0;
-    project.body.style.height = `${Math.max(minimumHeight, descriptionHeight + 100)}px`;
-  });
-  const heights = projects.map(project => project.card.offsetHeight);
-  projects.forEach((project, index) => {
-    project.top = Math.min(mobileLayout.matches ? 92 : 110, innerHeight - heights[index] - 20);
-    project.card.style.setProperty('--project-top', `${project.top}px`);
-    project.scene.style.setProperty('--project-height', `${heights[index]}px`);
-  });
-  projects.forEach((project, index) => {
-    project.travel = Math.max(1, project.scene.offsetHeight - heights[index]);
-  });
-  layoutDirty = false;
+// Make a configured project's preview clickable as well as its text link.
+for (const card of cards) {
+  const destination = card.querySelector('.project-link');
+  const art = card.querySelector('.project-art');
+  if (!destination || !art) continue;
+  const link = document.createElement('a');
+  link.className = art.className;
+  link.href = destination.href;
+  link.target = '_blank';
+  link.rel = 'noopener noreferrer';
+  link.setAttribute('aria-label', destination.getAttribute('aria-label'));
+  link.append(...art.childNodes);
+  art.replaceWith(link);
 }
 
+// Native details support touch, keyboard and a usable no-JavaScript fallback.
+const services = [...document.querySelectorAll('.service')];
+services.forEach(service => service.addEventListener('toggle', () => {
+  if (service.open) services.forEach(other => { if (other !== service) other.open = false; });
+}));
+
+const portrait = document.querySelector('.portrait-area');
+const hero = document.querySelector('.hero');
+let framePending = false;
 function renderScroll() {
   framePending = false;
-  if (layoutDirty) measureProjects();
   const maximum = document.documentElement.scrollHeight - innerHeight;
   document.documentElement.style.setProperty('--scroll-progress', maximum > 0 ? scrollY / maximum : 0);
-
-  projects.forEach(project => {
-    const progress = reducedMotion.matches ? 1 : Math.max(0, Math.min(1,
-      (project.top - project.scene.getBoundingClientRect().top) / (project.travel * 0.8)
-    ));
-    const eased = progress * progress * (3 - 2 * progress);
-    project.card.style.setProperty('--project-reveal', String(eased));
-    project.card.style.setProperty('--project-details', String(Math.max(0, Math.min(1, (eased - 0.15) / 0.65))));
-  });
+  const progress = Math.max(0, Math.min(1, -hero.getBoundingClientRect().top / hero.offsetHeight));
+  const drift = reducedMotion.matches ? 0 : progress * (mobileLayout.matches ? 18 : 45);
+  portrait.style.transform = mobileLayout.matches
+    ? 'translate3d(0,' + drift + 'px,0)'
+    : 'translate3d(-50%,' + drift + 'px,0)';
 }
-
 function requestScroll() {
-  if (!framePending) {
-    framePending = true;
-    requestAnimationFrame(renderScroll);
-  }
+  if (!framePending) { framePending = true; requestAnimationFrame(renderScroll); }
 }
-
-function requestLayout() {
-  layoutDirty = true;
-  requestScroll();
-}
-
 addEventListener('scroll', requestScroll, { passive: true });
-addEventListener('resize', requestLayout, { passive: true });
-addEventListener('load', requestLayout, { once: true });
-document.fonts.ready.then(requestLayout);
-reducedMotion.addEventListener('change', requestLayout);
-
-if ('ResizeObserver' in window) {
-  const observer = new ResizeObserver(requestLayout);
-  projects.forEach(project => {
-    if (project.description) observer.observe(project.description);
-  });
-}
+addEventListener('resize', requestScroll, { passive: true });
+reducedMotion.addEventListener('change', requestScroll);
 
 if ('IntersectionObserver' in window) {
   const observer = new IntersectionObserver(entries => {
@@ -167,14 +131,12 @@ if ('IntersectionObserver' in window) {
         observer.unobserve(entry.target);
       }
     });
-  }, { threshold: 0.12 });
-  document.querySelectorAll('.section-heading, .about-copy, .expertise-row, .contact-heading, .contact-bottom, .story-text, .story-caption')
-    .forEach((element, index) => {
-      element.classList.add('reveal');
-      element.style.setProperty('--reveal-delay', `${index % 2 * 85}ms`);
-      observer.observe(element);
-    });
+  }, { threshold: 0, rootMargin: '0px 0px -45px 0px' });
+  document.querySelectorAll('[data-reveal]').forEach(element => observer.observe(element));
   document.body.classList.add('motion-ready');
+  // Keyboard navigation must never land on an invisible control.
+  document.addEventListener('focusin', event => {
+    event.target.closest('[data-reveal]')?.classList.add('visible');
+  });
 }
-
 renderScroll();

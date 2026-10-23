@@ -1,6 +1,6 @@
 # Abhinav Prasad — Portfolio
 
-A responsive, static portfolio with scroll-driven project previews. No installation or build step is required.
+A responsive, static portfolio with a monochrome editorial layout, scroll reveals, subtle portrait motion and expandable services. No installation or build step is required.
 
 ## Files
 
@@ -16,10 +16,10 @@ Edit the matching entry in `projects.js` to change a project's title, category, 
 
 Update descriptions and thumbnails in the corresponding `data-project` article in `index.html`. New project cards need a unique `data-project` value and a matching entry in `projects.js`. Keep `.project-art`, `.project-info`, and `.project-note` in each card; `.project-description` is optional.
 
-Perzo also has an ordinary link in the HTML so it remains accessible without JavaScript. Update that link too when changing its destination.
+Perzo also has ordinary thumbnail and text links in the HTML so it remains accessible without JavaScript. Update those links too when changing its destination.
 
 ## Preview and publish
 
 Open `index.html` in a browser, or serve this folder with a static web server. Deploy the repository root on any static host; no build command is needed.
 
-The site uses Google Fonts with system-font fallbacks. Scroll motion follows the visitor's reduced-motion preference.
+The site uses system fonts and local images, without external animation libraries. Native scrolling works with touch, trackpad and keyboard. Scroll reveals and portrait motion follow the visitor's reduced-motion preference. Service panels work with touch and keyboard, and content remains accessible without JavaScript.
