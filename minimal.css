@@ -1,4 +1,9 @@
 /* Quiet portrait framing and responsive navigation. */
+.project-description{grid-column:1/-1;grid-row:1;padding:14px 16px 28px}
+.project-description h3{font-size:25px;line-height:1.35;font-weight:600;letter-spacing:-.7px;margin:0 0 14px;color:#eee8fa}
+.project-description p{max-width:900px;font-size:15px;line-height:1.85;color:#bcb3cd;margin:0}
+.project-description~.project-art{grid-row:2/4}
+@media(max-width:700px){.project-description{padding:15px 12px 24px}.project-description h3{font-size:22px}.project-description p{font-size:14px;line-height:1.8}}
 .brand-portrait{position:relative;isolation:isolate;width:36px;height:44px;flex-shrink:0;overflow:hidden;border-radius:0 0 50% 50% / 0 0 41% 41%;display:block}
 .brand-portrait::before{content:'';position:absolute;bottom:0;left:0;width:100%;aspect-ratio:1;border-radius:50%;background:#44365f;border:1px solid #8570a6;box-sizing:border-box;z-index:-1}
 .brand .brand-portrait img,footer .brand .brand-portrait img{position:absolute;width:121%;height:100%;left:-10.5%;top:0;object-fit:contain;object-position:bottom;border:0;border-radius:0;max-width:none;transform:none;box-shadow:none;outline:none}

@@ -21,7 +21,7 @@ const projects = [...document.querySelectorAll('.project')];
 for (const project of window.portfolioProjects || []) {
   const card = projects.find(element => element.dataset.project === String(project.slot));
   if (!card) continue;
-  card.querySelector('h3').textContent = project.title;
+  card.querySelector('.project-info h3').textContent = project.title;
   card.querySelector('.project-info p').textContent = project.category;
   let destination;
   try { destination = new URL(project.url); } catch { continue; }
