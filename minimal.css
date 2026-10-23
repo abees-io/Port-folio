@@ -1,7 +1,7 @@
 /* Quiet portrait framing and responsive navigation. */
 .about-section .about-grid{display:block;max-width:840px}
 .about-section .about-copy .eyebrow{color:#aaa0c5;font-size:10px;letter-spacing:1.8px;margin-bottom:18px}
-.about-section .about-name{display:table;font-size:36px;line-height:1.25;letter-spacing:-1.1px;font-weight:650;color:#d1c1ff;margin:0 0 27px;padding-bottom:10px;border-bottom:2px solid #8c75bf}
+.about-section .about-name{display:table;font-size:36px;line-height:1.25;letter-spacing:-1.1px;font-weight:650;color:#d1c1ff;margin:0 0 27px;padding-bottom:10px}
 @media(max-width:700px){.about-section .about-name{font-size:29px;margin-bottom:23px}.about-section .about-copy .eyebrow{font-size:9px}}
 @media(max-width:700px){
  .projects{gap:44px;padding-bottom:16px}
