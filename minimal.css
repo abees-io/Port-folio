@@ -1,4 +1,18 @@
 /* Quiet portrait framing and responsive navigation. */
+/* Perzo's public app palette: charcoal, warm white and orange. */
+.project[data-project="1"]{background:#08080a;border-color:#ffffff20}
+.project[data-project="1"].project-live:hover{border-color:#ff8c4880}
+.project[data-project="1"]:focus-within{outline-color:#ff8c48}
+.project[data-project="1"] .project-description h3,.project[data-project="1"] .project-info h3{color:#f4f1ee}
+.project[data-project="1"] .project-description p{color:#a5a0a9}
+.project[data-project="1"] .project-info p,.project[data-project="1"] .project-info>span{color:#d49272}
+.project[data-project="1"] .perzo{background:radial-gradient(ellipse at 50% 100%,#ff8c481c,transparent 65%),linear-gradient(115deg,#1f1820,#17131b);border:1px solid #69516470}
+.project[data-project="1"] .perzo-wordmark{color:#f4f1ee}
+.project[data-project="1"] .perzo-wordmark>span{color:#ff8c48}
+.project[data-project="1"] .perzo-domain{color:#a5a0a9}
+.project[data-project="1"] .perzo-caption,.project[data-project="1"] .preview-label{color:#c28f75}
+.project[data-project="1"] .project-link{color:#ff8c48}
+.project[data-project="1"] .project-link:hover{color:#ffb58b}
 .project-description{grid-column:1/-1;grid-row:1;padding:14px 16px 28px}
 .project-description h3{font-size:25px;line-height:1.35;font-weight:600;letter-spacing:-.7px;margin:0 0 14px;color:#eee8fa}
 .project-description p{max-width:900px;font-size:15px;line-height:1.85;color:#bcb3cd;margin:0}
