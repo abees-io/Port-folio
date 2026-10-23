@@ -1223,3 +1223,23 @@ only opacity and transforms animate. */
 @media(prefers-reduced-motion:reduce) {
   .project-scene:first-child { grid-column:1/-1; }
 }
+
+/* The work section rises over the fading portrait for one continuous handoff. */
+@media(prefers-reduced-motion:no-preference) {
+  .hero-scroll-ready .work-section {
+    position:relative;
+    z-index:4;
+    margin-top:calc(-1 * var(--hero-overlap,0px));
+    padding-top:42px;
+  }
+  .hero-scroll-ready .work-section .section-heading {
+    min-height:78px;
+    margin-bottom:26px;
+  }
+  .hero-scroll-ready .portrait-area { opacity:calc(1 - var(--hero-scroll,0)); }
+  .hero-scroll-ready .hero-name > span { opacity:calc(1 - var(--hero-scroll,0)); }
+  @media(max-width:700px) {
+    .hero-scroll-ready .work-section { padding-top:28px; }
+    .hero-scroll-ready .work-section .section-heading { min-height:72px; margin-bottom:20px; }
+  }
+}

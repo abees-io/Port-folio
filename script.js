@@ -104,6 +104,7 @@ services.forEach(service => service.addEventListener('toggle', () => {
 }));
 
 const hero = document.querySelector('.hero');
+const workSection = document.getElementById('work');
 // Each project gets its own scroll interval for the preview-to-details transition.
 const projectScenes = cards.map(card => {
   card.removeAttribute('data-reveal');
@@ -144,6 +145,8 @@ function measureHero() {
   heroTravel = Math.max(360, innerHeight * 0.85);
   heroScene.style.setProperty('--hero-top', `${heroTop}px`);
   heroScene.style.setProperty('--hero-scene-height', `${hero.offsetHeight + heroTravel}px`);
+  // Bring the next section over the fading hero instead of leaving a blank interval.
+  workSection.style.setProperty('--hero-overlap', `${Math.max(0, hero.offsetHeight - 100)}px`);
   requestScroll();
 }
 let framePending = false;
@@ -155,9 +158,11 @@ function renderScroll() {
     (heroTop - heroScene.getBoundingClientRect().top) / heroTravel
   ));
   hero.style.setProperty('--hero-scroll', progress.toFixed(4));
-  projectScenes.forEach(project => {
+  projectScenes.forEach((project, index) => {
+    // Perzo starts revealing during the handoff, before reaching its sticky position.
+    const start = index === 0 ? Math.max(project.top, innerHeight * 0.55) : project.top;
     const progress = Math.max(0, Math.min(1,
-      (project.top - project.scene.getBoundingClientRect().top) / (project.travel * 0.85)
+      (start - project.scene.getBoundingClientRect().top) / (project.travel * 0.85 + start - project.top)
     ));
     const eased = progress * progress * (3 - 2 * progress);
     project.card.style.setProperty('--project-reveal', eased.toFixed(4));
