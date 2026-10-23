@@ -45,16 +45,23 @@ function renderScroll() {
   const motionEnabled = !reducedMotion.matches;
   portrait.style.setProperty('--portrait-y', motionEnabled && innerWidth > 700 ? `${Math.min(scrollY * .085, 45)}px` : '0px');
   projects.forEach((card, index) => {
+    const mobile = innerWidth <= 700;
+    const stickyTop = Math.min(96 + index * 12, innerHeight - card.offsetHeight - 20);
+    card.style.setProperty('--project-top', `${stickyTop}px`);
     const next = projects[index + 1];
-    if (!motionEnabled || innerWidth <= 700 || !next) { card.style.transform = ''; return; }
+    if (!motionEnabled || !next) { card.style.transform = ''; card.style.setProperty('--project-scale', '1'); return; }
     const progress = Math.max(0, Math.min(1, (innerHeight * .72 - next.getBoundingClientRect().top) / (innerHeight * .55)));
-    card.style.transform = `scale(${1 - progress * .035})`;
+    const scale = 1 - progress * (mobile ? .025 : .035);
+    card.style.setProperty('--project-scale', String(scale));
+    card.style.transform = `scale(${scale})`;
   });
 }
 function requestScroll() { if (!ticking) { ticking = true; requestAnimationFrame(renderScroll); } }
 
 addEventListener('scroll', requestScroll, { passive: true });
 addEventListener('resize', requestScroll, { passive: true });
+addEventListener('load', requestScroll, { once: true });
+document.fonts.ready.then(requestScroll);
 reducedMotion.addEventListener('change', requestScroll);
 renderScroll();
 const menuButton = document.querySelector('.menu-toggle');

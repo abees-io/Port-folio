@@ -1,4 +1,11 @@
 /* Quiet portrait framing and responsive navigation. */
+@media(max-width:700px){
+ .projects{gap:44px;padding-bottom:16px}
+ .project,.project:nth-child(2),.project:nth-child(3){position:sticky;top:var(--project-top,96px);transform:scale(var(--project-scale,1))!important;transform-origin:50% 0;box-shadow:0 -14px 35px #090b1480}
+}
+@media(max-width:700px) and (prefers-reduced-motion:reduce){
+ .project,.project:nth-child(2),.project:nth-child(3){transform:none!important}
+}
 /* Perzo's public app palette: charcoal, warm white and orange. */
 .project[data-project="1"]{background:#08080a;border-color:#ffffff20}
 .project[data-project="1"].project-live:hover{border-color:#ff8c4880}
