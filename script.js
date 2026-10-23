@@ -47,6 +47,11 @@ const projectScenes = projects.map(card => {
   body.className = 'project-body';
   card.append(body);
   ['.project-art', '.project-info', '.project-note'].forEach(selector => body.append(card.querySelector(selector)));
+  const description = card.querySelector('.project-description');
+  if (description) {
+    body.append(description);
+    card.classList.add('project-with-description');
+  }
   return scene;
 });
 document.body.classList.add('project-motion-ready');
@@ -58,6 +63,9 @@ function renderScroll() {
   const motionEnabled = !reducedMotion.matches;
   portrait.style.setProperty('--portrait-y', motionEnabled && innerWidth > 700 ? `${Math.min(scrollY * .085, 45)}px` : '0px');
   projects.forEach((card, index) => {
+    const body = card.querySelector('.project-body');
+    const description = card.querySelector('.project-description');
+    body.style.height = `${Math.max(innerWidth <= 700 ? 360 : 380, description ? description.offsetHeight + 100 : 0)}px`;
     projectScenes[index].style.setProperty('--project-height', `${card.offsetHeight}px`);
     const stickyTop = Math.min(innerWidth <= 700 ? 92 : 110, innerHeight - card.offsetHeight - 20);
     card.style.setProperty('--project-top', `${stickyTop}px`);

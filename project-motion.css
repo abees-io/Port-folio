@@ -6,8 +6,8 @@
 .project-motion-ready .project-body:focus-within{--project-reveal:1;--project-details:1}
 .project-motion-ready .project-description{padding:14px 16px 28px}
 .project-motion-ready .project-art{position:absolute;inset:0 0 0 auto;width:calc(100% - var(--project-reveal,0)*55%);height:100%;margin:0;z-index:2;transform:translateZ(0)}
-.project-motion-ready .project-info{position:absolute;left:0;top:45px;width:50%;padding:25px;opacity:var(--project-details,0);transform:translateY(calc((1 - var(--project-reveal,0))*45px));display:flex}
-.project-motion-ready .project-note{position:absolute;left:0;bottom:30px;width:50%;padding:0 25px;margin:0;opacity:var(--project-details,0);transform:translateY(calc((1 - var(--project-reveal,0))*30px))}
+.project-motion-ready .project-info{position:absolute;left:0;top:45px;width:50%;padding:25px;opacity:var(--project-details,0);transform:translateX(calc((1 - var(--project-reveal,0))*90px));display:flex}
+.project-motion-ready .project-note{position:absolute;left:0;bottom:30px;width:50%;padding:0 25px;margin:0;opacity:var(--project-details,0);transform:translateX(calc((1 - var(--project-reveal,0))*90px))}
 .project-motion-ready .project-link::after{display:none}
 .project-motion-ready .project-link{position:relative;z-index:3}
 .project-motion-ready .mock-browser{width:100%;max-width:450px;margin-inline:auto}
@@ -17,15 +17,26 @@
  .project-motion-ready .project-scene{height:calc(var(--project-height,700px) + 60vh);height:calc(var(--project-height,700px) + 60svh)}
  .project-motion-ready .project,.project-motion-ready .project:nth-child(2),.project-motion-ready .project:nth-child(3){position:sticky;top:var(--project-top,92px);transform:none!important}
  .project-motion-ready .project-body{height:390px}
- .project-motion-ready .project-art{width:calc(100% - var(--project-reveal,0)*10%);height:calc(280px - var(--project-reveal,0)*65px);right:0;padding:19px 20px 0}
- .project-motion-ready .project-info{top:230px;left:0;width:100%;padding:12px;transform:translateY(calc((1 - var(--project-reveal,0))*55px))}
+ .project-motion-ready .project-art{width:calc(100% - var(--project-reveal,0)*56%);height:calc(100% - var(--project-reveal,0)*30%);right:0;top:calc(var(--project-reveal,0)*15px);padding:15px 10px 0}
+ .project-motion-ready .project-info{top:35px;left:0;width:54%;padding:12px 8px;transform:translateX(calc((1 - var(--project-reveal,0))*60px))}
  .project-motion-ready .project-info h3{font-size:23px}
- .project-motion-ready .project-note{bottom:14px;width:100%;padding:0 12px;transform:translateY(calc((1 - var(--project-reveal,0))*35px))}
+ .project-motion-ready .project-note{bottom:14px;width:54%;padding:0 8px;transform:translateX(calc((1 - var(--project-reveal,0))*60px))}
  .project-motion-ready .project-description{padding:15px 12px 24px}
  .project-motion-ready .project-description p{font-size:14px}
  .project-motion-ready .perzo-preview{gap:10px}
- .project-motion-ready .perzo-wordmark{font-size:48px}
+ .project-motion-ready .perzo-wordmark{font-size:clamp(24px,7vw,38px);letter-spacing:-1px}
+ .project-motion-ready .perzo-domain{font-size:8px;letter-spacing:0;overflow-wrap:anywhere}
+ .project-motion-ready .preview-label{font-size:6px;letter-spacing:.6px}
  .project-motion-ready .perzo-caption{margin-top:8px}
+}
+.project-motion-ready .project-body>.project-description{position:absolute;left:0;top:20px;width:53%;padding:12px 24px;opacity:var(--project-details,0);transform:translateX(calc((1 - var(--project-reveal,0))*90px));z-index:1}
+.project-motion-ready .project-with-description .project-info{display:none}
+.project-motion-ready .project-body>.project-description p{font-size:14px;line-height:1.8}
+@media(max-width:700px){
+ .project-motion-ready .project-body>.project-description{top:12px;width:55%;padding:8px;transform:translateX(calc((1 - var(--project-reveal,0))*60px))}
+ .project-motion-ready .project-body>.project-description h3{font-size:18px;letter-spacing:-.5px;line-height:1.35;margin-bottom:12px}
+ .project-motion-ready .project-body>.project-description p{font-size:12px;line-height:1.75}
+ .project-motion-ready .project-with-description .project-art{height:calc(100% - var(--project-reveal,0)*55%)}
 }
 @media(prefers-reduced-motion:reduce){
  .project-motion-ready .project-scene{height:auto}
