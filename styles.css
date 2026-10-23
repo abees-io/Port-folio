@@ -1148,3 +1148,35 @@ only opacity and transforms animate. */
     will-change:auto
   }
 }
+
+/* Hold the opening composition while the first scroll separates its layers. */
+.hero-name > .surname { color:var(--ink); -webkit-text-stroke:0; }
+@media(prefers-reduced-motion:no-preference) {
+  .hero-scroll-ready .hero-scroll-scene { height:var(--hero-scene-height); }
+  .hero-scroll-ready .hero { position:sticky; top:var(--hero-top); overflow:clip; }
+  .hero-scroll-ready .hero-name { animation:none; }
+  .hero-scroll-ready .hero-name > span {
+    display:inline-block;
+    transform:translate3d(calc(var(--hero-scroll,0) * -160px),calc(var(--hero-scroll,0) * -45px),0);
+    opacity:calc(1 - var(--hero-scroll,0) * .85);
+    will-change:transform,opacity;
+  }
+  .hero-scroll-ready .hero-name > .surname {
+    transform:translate3d(calc(var(--hero-scroll,0) * 160px),calc(var(--hero-scroll,0) * -45px),0);
+  }
+  .hero-scroll-ready .portrait-area {
+    transform:translate3d(-50%,calc(var(--hero-scroll,0) * 90px),0) scale(calc(1 - var(--hero-scroll,0) * .35));
+    opacity:calc(1 - var(--hero-scroll,0) * .9);
+  }
+  .hero-scroll-ready .hero-copy, .hero-scroll-ready .hero-aside {
+    animation:none;
+    transform:translateY(calc(var(--hero-scroll,0) * -60px));
+    opacity:calc(1 - var(--hero-scroll,0) * 1.4);
+  }
+  .hero-scroll-ready .hero-bottom { opacity:calc(1 - var(--hero-scroll,0)); }
+  @media(max-width:700px) {
+    .hero-scroll-ready .hero-name > span { display:block; transform:translateX(calc(var(--hero-scroll,0) * -85px)); }
+    .hero-scroll-ready .hero-name > .surname { transform:translateX(calc(var(--hero-scroll,0) * 85px)); }
+    .hero-scroll-ready .portrait-area { transform:translateY(calc(var(--hero-scroll,0) * 35px)) scale(calc(1 - var(--hero-scroll,0) * .3)); }
+  }
+}

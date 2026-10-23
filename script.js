@@ -103,25 +103,40 @@ services.forEach(service => service.addEventListener('toggle', () => {
   if (service.open) services.forEach(other => { if (other !== service) other.open = false; });
 }));
 
-const portrait = document.querySelector('.portrait-area');
 const hero = document.querySelector('.hero');
+const heroScene = document.createElement('div');
+heroScene.className = 'hero-scroll-scene';
+hero.before(heroScene);
+heroScene.append(hero);
+document.body.classList.add('hero-scroll-ready');
+let heroTop = 0;
+let heroTravel = 1;
+function measureHero() {
+  heroTop = Math.min(0, innerHeight - hero.offsetHeight - 12);
+  heroTravel = Math.max(360, innerHeight * 0.85);
+  heroScene.style.setProperty('--hero-top', `${heroTop}px`);
+  heroScene.style.setProperty('--hero-scene-height', `${hero.offsetHeight + heroTravel}px`);
+  requestScroll();
+}
 let framePending = false;
 function renderScroll() {
   framePending = false;
   const maximum = document.documentElement.scrollHeight - innerHeight;
   document.documentElement.style.setProperty('--scroll-progress', maximum > 0 ? scrollY / maximum : 0);
-  const progress = Math.max(0, Math.min(1, -hero.getBoundingClientRect().top / hero.offsetHeight));
-  const drift = reducedMotion.matches ? 0 : progress * (mobileLayout.matches ? 18 : 45);
-  portrait.style.transform = mobileLayout.matches
-    ? 'translate3d(0,' + drift + 'px,0)'
-    : 'translate3d(-50%,' + drift + 'px,0)';
+  const progress = reducedMotion.matches ? 0 : Math.max(0, Math.min(1,
+    (heroTop - heroScene.getBoundingClientRect().top) / heroTravel
+  ));
+  hero.style.setProperty('--hero-scroll', progress.toFixed(4));
 }
 function requestScroll() {
   if (!framePending) { framePending = true; requestAnimationFrame(renderScroll); }
 }
 addEventListener('scroll', requestScroll, { passive: true });
-addEventListener('resize', requestScroll, { passive: true });
-reducedMotion.addEventListener('change', requestScroll);
+addEventListener('resize', measureHero, { passive: true });
+addEventListener('load', measureHero, { once: true });
+reducedMotion.addEventListener('change', measureHero);
+if ('ResizeObserver' in window) new ResizeObserver(measureHero).observe(hero);
+document.fonts.ready.then(measureHero);
 
 if ('IntersectionObserver' in window) {
   const observer = new IntersectionObserver(entries => {
@@ -139,4 +154,5 @@ if ('IntersectionObserver' in window) {
     event.target.closest('[data-reveal]')?.classList.add('visible');
   });
 }
+measureHero();
 renderScroll();
