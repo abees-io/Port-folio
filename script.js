@@ -104,6 +104,33 @@ services.forEach(service => service.addEventListener('toggle', () => {
 }));
 
 const hero = document.querySelector('.hero');
+// Each project gets its own scroll interval for the preview-to-details transition.
+const projectScenes = cards.map(card => {
+  card.removeAttribute('data-reveal');
+  const scene = document.createElement('div');
+  scene.className = 'project-scene';
+  card.before(scene);
+  scene.append(card);
+  const body = document.createElement('div');
+  body.className = 'project-body';
+  body.append(...card.childNodes);
+  card.append(body);
+  const description = body.querySelector('.project-description');
+  if (description) card.classList.add('project-with-description');
+  return { card, scene, body, description, top: 0, travel: 1 };
+});
+document.body.classList.add('project-motion-ready');
+function measureProjects() {
+  projectScenes.forEach(project => {
+    const height = Math.max(mobileLayout.matches ? 380 : 480,
+      (project.description?.offsetHeight || 0) + 110);
+    project.body.style.setProperty('--project-body-height', `${height}px`);
+    project.top = Math.min(60, innerHeight - height - 20);
+    project.travel = Math.max(360, innerHeight * 0.7);
+    project.scene.style.setProperty('--project-scene-height', `${height + project.travel}px`);
+    project.card.style.setProperty('--project-top', `${project.top}px`);
+  });
+}
 const heroScene = document.createElement('div');
 heroScene.className = 'hero-scroll-scene';
 hero.before(heroScene);
@@ -112,6 +139,7 @@ document.body.classList.add('hero-scroll-ready');
 let heroTop = 0;
 let heroTravel = 1;
 function measureHero() {
+  measureProjects();
   heroTop = Math.min(0, innerHeight - hero.offsetHeight - 12);
   heroTravel = Math.max(360, innerHeight * 0.85);
   heroScene.style.setProperty('--hero-top', `${heroTop}px`);
@@ -127,6 +155,14 @@ function renderScroll() {
     (heroTop - heroScene.getBoundingClientRect().top) / heroTravel
   ));
   hero.style.setProperty('--hero-scroll', progress.toFixed(4));
+  projectScenes.forEach(project => {
+    const progress = Math.max(0, Math.min(1,
+      (project.top - project.scene.getBoundingClientRect().top) / (project.travel * 0.85)
+    ));
+    const eased = progress * progress * (3 - 2 * progress);
+    project.card.style.setProperty('--project-reveal', eased.toFixed(4));
+    project.card.style.setProperty('--project-details', Math.max(0, Math.min(1, (eased - 0.1) / 0.65)).toFixed(4));
+  });
 }
 function requestScroll() {
   if (!framePending) { framePending = true; requestAnimationFrame(renderScroll); }
