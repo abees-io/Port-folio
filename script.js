@@ -18,6 +18,25 @@ if ('IntersectionObserver' in window) {
 }
 const portrait = document.querySelector('.portrait-area');
 const projects = [...document.querySelectorAll('.project')];
+for (const project of window.portfolioProjects || []) {
+  const card = projects.find(element => element.dataset.project === String(project.slot));
+  if (!card) continue;
+  card.querySelector('h3').textContent = project.title;
+  card.querySelector('.project-info p').textContent = project.category;
+  let destination;
+  try { destination = new URL(project.url); } catch { continue; }
+  if (!['https:', 'http:'].includes(destination.protocol)) continue;
+  const link = document.createElement('a');
+  link.className = 'project-link';
+  link.href = destination.href;
+  link.target = '_blank';
+  link.rel = 'noopener noreferrer';
+  link.textContent = 'View project •';
+  link.setAttribute('aria-label', `View ${project.title} (opens in a new tab)`);
+  card.querySelector('.project-note').replaceChildren(link);
+  card.classList.add('project-live');
+  card.querySelector('.preview-label').textContent = 'SELECTED PROJECT / ' + String(project.slot).padStart(2, '0');
+}
 let ticking = false;
 function renderScroll() {
   ticking = false;
