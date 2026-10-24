@@ -161,9 +161,6 @@ function renderScroll() {
     (heroTop - heroScene.getBoundingClientRect().top) / heroTravel
   ));
   hero.style.setProperty('--hero-scroll', progress.toFixed(4));
-  // Restore the portrait's natural color with a left-to-right wipe before it fades.
-  const colorProgress = reducedMotion.matches ? 1 : Math.min(1, progress / 0.38);
-  hero.style.setProperty('--portrait-color', colorProgress.toFixed(4));
   const aboutProgress = reducedMotion.matches ? 1 : Math.max(0, Math.min(1,
     (innerHeight * 0.9 - aboutSection.getBoundingClientRect().top) / (innerHeight * 0.55)
   ));

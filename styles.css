@@ -313,7 +313,7 @@ h1,h2,h3,p,figure{
 .project-description p{
   font-size:13px;
   line-height:1.8;
-  color:#646461
+  color:#000
 }
 .project-art{
   height:350px;
@@ -524,7 +524,7 @@ h1,h2,h3,p,figure{
 .service-content p{
   font-size:14px;
   line-height:1.7;
-  color:#c0c0bc;
+  color:#fff;
   max-width:450px;
   padding-right:20px
 }
@@ -578,11 +578,11 @@ h1,h2,h3,p,figure{
   border-radius:3px
 }
 .about-section{
-  background:#242424;
-  color:#f4f4f0
+  background:#000;
+  color:#fff
 }
 .about-section .ghost{
-  color:#2e2e2e
+  color:#000
 }
 .about-section .section-index{
   color:#aaa
@@ -602,12 +602,12 @@ h1,h2,h3,p,figure{
   font-size:clamp(27px,3vw,40px);
   letter-spacing:-1.5px;
   line-height:1.25;
-  color:#d0d0cc
+  color:#fff
 }
 .about-copy p{
   font-size:14px;
   line-height:1.9;
-  color:#aeaeaa;
+  color:#fff;
   margin-bottom:18px
 }
 .background-row{
@@ -625,7 +625,7 @@ h1,h2,h3,p,figure{
 }
 .background-row p,.background-row>span{
   font-size:12px;
-  color:#a5a5a1
+  color:#fff
 }
 .background-row>span{
   white-space:nowrap
@@ -1244,17 +1244,10 @@ only opacity and transforms animate. */
   }
 }
 
-/* Natural skin tones sweep across the monochrome portrait as scrolling begins. */
-.portrait-area .portrait-color {
-  position:absolute;
-  inset:0;
-  filter:none;
-  clip-path:inset(0 calc((1 - var(--portrait-color,0)) * 100%) 0 0);
-  pointer-events:none;
-}
+/* Small warm accent for the availability indicator. */
 .hero-aside .availability i { background:#b48d70; }
-.about-slash { color:#d7b497; }
-.about-name { color:#e4c5ad; }
+.about-slash { color:#fff; }
+.about-name { color:#fff; }
 @media(prefers-reduced-motion:no-preference) {
   .about-motion-ready #about .section-heading { overflow:clip; }
   .about-motion-ready .about-word {
@@ -1275,6 +1268,8 @@ only opacity and transforms animate. */
     transform:translateY(calc((1 - var(--about-reveal,0)) * 18px));
   }
 }
-@media(prefers-reduced-motion:reduce) {
-  .portrait-area .portrait-color { clip-path:none; }
-}
+
+
+/* Description copy uses black and white for clear contrast. */
+.hero-copy > p:not(.eyebrow), .contact-inner > p:not(.eyebrow), .project-note { color:#000; }
+.about-section .section-index { color:#fff; }
