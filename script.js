@@ -107,6 +107,9 @@ const hero = document.querySelector('.hero');
 const workSection = document.getElementById('work');
 const aboutSection = document.getElementById('about');
 aboutSection.querySelector('.section-heading').removeAttribute('data-reveal');
+aboutSection.querySelector('.about-grid').removeAttribute('data-reveal');
+const aboutItems = [...aboutSection.querySelectorAll('.about-name, .large-copy, .about-copy p')];
+aboutItems.forEach(element => element.classList.add('about-animated-item'));
 document.body.classList.add('about-motion-ready');
 // Each project gets its own scroll interval for the preview-to-details transition.
 const projectScenes = cards.map(card => {
@@ -165,6 +168,15 @@ function renderScroll() {
     (innerHeight * 0.9 - aboutSection.getBoundingClientRect().top) / (innerHeight * 0.55)
   ));
   aboutSection.style.setProperty('--about-reveal', aboutProgress.toFixed(4));
+  aboutItems.forEach(element => {
+    // Use the layout position so transforms never feed back into the scroll timing.
+    let top = 0;
+    for (let node = element; node; node = node.offsetParent) top += node.offsetTop;
+    const progress = reducedMotion.matches ? 1 : Math.max(0, Math.min(1,
+      (innerHeight * 0.94 - (top - scrollY)) / (innerHeight * 0.34)
+    ));
+    element.style.setProperty('--item-reveal', progress.toFixed(4));
+  });
   projectScenes.forEach((project, index) => {
     // Perzo starts revealing during the handoff, before reaching its sticky position.
     const start = index === 0 ? Math.max(project.top, innerHeight * 0.55) : project.top;
