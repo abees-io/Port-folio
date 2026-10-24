@@ -1243,3 +1243,38 @@ only opacity and transforms animate. */
     .hero-scroll-ready .work-section .section-heading { min-height:72px; margin-bottom:20px; }
   }
 }
+
+/* Natural skin tones sweep across the monochrome portrait as scrolling begins. */
+.portrait-area .portrait-color {
+  position:absolute;
+  inset:0;
+  filter:none;
+  clip-path:inset(0 calc((1 - var(--portrait-color,0)) * 100%) 0 0);
+  pointer-events:none;
+}
+.hero-aside .availability i { background:#b48d70; }
+.about-slash { color:#d7b497; }
+.about-name { color:#e4c5ad; }
+@media(prefers-reduced-motion:no-preference) {
+  .about-motion-ready #about .section-heading { overflow:clip; }
+  .about-motion-ready .about-word {
+    display:inline-block;
+    opacity:var(--about-reveal,0);
+    transform:translateY(calc((1 - var(--about-reveal,0)) * 65px)) rotate(calc((1 - var(--about-reveal,0)) * 7deg));
+    transform-origin:left bottom;
+  }
+  .about-motion-ready .about-word:last-child {
+    transform:translateY(calc((1 - var(--about-reveal,0)) * 90px)) rotate(calc((1 - var(--about-reveal,0)) * -9deg));
+  }
+  .about-motion-ready #about .ghost {
+    transform:translateX(calc((1 - var(--about-reveal,0)) * -45px));
+    opacity:calc(.25 + var(--about-reveal,0) * .75);
+  }
+  .about-motion-ready .about-name {
+    clip-path:inset(0 calc((1 - var(--about-reveal,0)) * 100%) 0 0);
+    transform:translateY(calc((1 - var(--about-reveal,0)) * 18px));
+  }
+}
+@media(prefers-reduced-motion:reduce) {
+  .portrait-area .portrait-color { clip-path:none; }
+}

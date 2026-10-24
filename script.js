@@ -105,6 +105,9 @@ services.forEach(service => service.addEventListener('toggle', () => {
 
 const hero = document.querySelector('.hero');
 const workSection = document.getElementById('work');
+const aboutSection = document.getElementById('about');
+aboutSection.querySelector('.section-heading').removeAttribute('data-reveal');
+document.body.classList.add('about-motion-ready');
 // Each project gets its own scroll interval for the preview-to-details transition.
 const projectScenes = cards.map(card => {
   card.removeAttribute('data-reveal');
@@ -158,6 +161,13 @@ function renderScroll() {
     (heroTop - heroScene.getBoundingClientRect().top) / heroTravel
   ));
   hero.style.setProperty('--hero-scroll', progress.toFixed(4));
+  // Restore the portrait's natural color with a left-to-right wipe before it fades.
+  const colorProgress = reducedMotion.matches ? 1 : Math.min(1, progress / 0.38);
+  hero.style.setProperty('--portrait-color', colorProgress.toFixed(4));
+  const aboutProgress = reducedMotion.matches ? 1 : Math.max(0, Math.min(1,
+    (innerHeight * 0.9 - aboutSection.getBoundingClientRect().top) / (innerHeight * 0.55)
+  ));
+  aboutSection.style.setProperty('--about-reveal', aboutProgress.toFixed(4));
   projectScenes.forEach((project, index) => {
     // Perzo starts revealing during the handoff, before reaching its sticky position.
     const start = index === 0 ? Math.max(project.top, innerHeight * 0.55) : project.top;
