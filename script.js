@@ -1,6 +1,6 @@
 'use strict';
 
-const email = 'abeees65lop@gmail.com';
+const email = 'cosmic.abis6@gmail.com';
 const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
 const mobileLayout = matchMedia('(max-width: 700px)');
 const menuButton = document.querySelector('.menu-toggle');
