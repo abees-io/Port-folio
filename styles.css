@@ -1,9 +1,9 @@
 /* Monochrome editorial layout, inspired by the supplied scroll reference. */
 @font-face {
-  font-family:"Bowlby One";
-  src:url("assets/fonts/bowlby-one.ttf") format("truetype");
+  font-family:"Baloo 2";
+  src:url("assets/fonts/baloo2-variable.ttf") format("truetype");
   font-style:normal;
-  font-weight:400;
+  font-weight:400 800;
   font-display:swap;
 }
 :root{
@@ -1322,16 +1322,14 @@ only opacity and transforms animate. */
   }
 }
 
-/* Heavy slanted display lettering inspired by the supplied FLOW reference. */
+/* Soft, rounded display lettering inspired by the supplied Adorely reference. */
 #work .projects-title {
-  font-family:"Bowlby One", Arial Black, sans-serif;
+  font-family:"Baloo 2", Arial Rounded MT Bold, Arial, sans-serif;
   display:inline-block;
-  font-size:clamp(30px,4.7vw,62px);
-  font-weight:400;
-  letter-spacing:.01em;
-  line-height:1;
-  text-transform:uppercase;
-  transform:skewX(-12deg) scaleX(1.08);
-  transform-origin:left center;
+  font-size:clamp(26px,3.7vw,49px);
+  font-weight:700;
+  letter-spacing:-.055em;
+  line-height:1.05;
+  text-transform:lowercase;
   color:#000;
 }
