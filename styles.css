@@ -6,13 +6,6 @@
   font-weight:400 800;
   font-display:swap;
 }
-@font-face {
-  font-family:"Caveat";
-  src:url("assets/fonts/caveat-variable.ttf") format("truetype");
-  font-style:normal;
-  font-weight:400 700;
-  font-display:swap;
-}
 :root{
   color-scheme:light;
   --paper:#f8f8f6;
@@ -1339,13 +1332,4 @@ only opacity and transforms animate. */
   line-height:1.05;
   text-transform:lowercase;
   color:#000;
-}
-#work .projects-cursive {
-  display:inline-block;
-  font-family:"Caveat", "Segoe Script", cursive;
-  font-size:1.18em;
-  font-weight:700;
-  letter-spacing:-.07em;
-  line-height:.8;
-  transform:translateY(.07em) rotate(-2deg);
 }
