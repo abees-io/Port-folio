@@ -59,7 +59,7 @@ for (const project of window.portfolioProjects || []) {
     if (!['https:', 'http:'].includes(destination.protocol)) throw new Error('Invalid project URL');
   } catch {
     card.classList.remove('project-live');
-    note.textContent = 'Project showcase coming soon · Concept preview';
+    note.textContent = project.note || 'Project showcase coming soon · Concept preview';
     const linkedArt = card.querySelector('a.project-art');
     if (linkedArt) {
       const preview = document.createElement('div');
@@ -124,7 +124,9 @@ const projectScenes = cards.map(card => {
   card.append(body);
   const description = body.querySelector('.project-description');
   if (description) card.classList.add('project-with-description');
-  return { card, scene, body, description, top: 0, travel: 1 };
+  const longCopy = !!description && description.querySelectorAll('p').length > 2;
+  if (longCopy) scene.classList.add('project-long-copy');
+  return { card, scene, body, description, longCopy, top: 0, travel: 1 };
 });
 document.body.classList.add('project-motion-ready');
 function measureProjects() {
@@ -179,9 +181,12 @@ function renderScroll() {
   });
   projectScenes.forEach((project, index) => {
     // Perzo starts revealing during the handoff, before reaching its sticky position.
-    const start = index === 0 ? Math.max(project.top, innerHeight * 0.55) : project.top;
+    const flowingCopy = mobileLayout.matches && project.longCopy;
+    const start = flowingCopy ? innerHeight * 0.9
+      : index === 0 ? Math.max(project.top, innerHeight * 0.55) : project.top;
+    const duration = flowingCopy ? innerHeight * 0.45 : project.travel * 0.85 + start - project.top;
     const progress = Math.max(0, Math.min(1,
-      (start - project.scene.getBoundingClientRect().top) / (project.travel * 0.85 + start - project.top)
+      (start - project.scene.getBoundingClientRect().top) / duration
     ));
     const eased = progress * progress * (3 - 2 * progress);
     project.card.style.setProperty('--project-reveal', eased.toFixed(4));
