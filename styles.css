@@ -1,4 +1,11 @@
 /* Monochrome editorial layout, inspired by the supplied scroll reference. */
+@font-face {
+  font-family:"Bowlby One";
+  src:url("assets/fonts/bowlby-one.ttf") format("truetype");
+  font-style:normal;
+  font-weight:400;
+  font-display:swap;
+}
 :root{
   color-scheme:light;
   --paper:#f8f8f6;
@@ -1315,13 +1322,16 @@ only opacity and transforms animate. */
   }
 }
 
-/* Rounded lowercase letterforms for the work heading. */
+/* Heavy slanted display lettering inspired by the supplied FLOW reference. */
 #work .projects-title {
-  font-family:"Arial Rounded MT Bold", "Trebuchet MS", Arial, sans-serif;
-  font-size:clamp(32px,5vw,66px);
-  font-weight:700;
-  letter-spacing:-.065em;
-  line-height:1.15;
-  text-transform:lowercase;
+  font-family:"Bowlby One", Arial Black, sans-serif;
+  display:inline-block;
+  font-size:clamp(30px,4.7vw,62px);
+  font-weight:400;
+  letter-spacing:.01em;
+  line-height:1;
+  text-transform:uppercase;
+  transform:skewX(-12deg) scaleX(1.08);
+  transform-origin:left center;
   color:#000;
 }
