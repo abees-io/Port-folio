@@ -255,6 +255,27 @@ h1,h2,h3,p,figure{
   padding-block:110px;
   scroll-margin-top:20px
 }
+/* Keep the story in scroll order: introduction, background, work, then services. */
+main{
+  display:flex;
+  flex-direction:column;
+}
+.hero-scroll-scene,
+.hero{
+  order:0;
+}
+#about{
+  order:1;
+}
+#work{
+  order:2;
+}
+#expertise{
+  order:3;
+}
+#contact{
+  order:4;
+}
 .section-heading{
   position:relative;
   min-height:112px;
@@ -285,12 +306,6 @@ h1,h2,h3,p,figure{
 .section-index{
   font-size:12px;
   color:var(--muted)
-}
-.work-section{
-  background:#f1f1ef
-}
-.work-section .ghost{
-  color:#e6e6e3
 }
 .projects{
   display:grid;
@@ -1231,23 +1246,23 @@ only opacity and transforms animate. */
   .project-scene:first-child { grid-column:1/-1; }
 }
 
-/* The work section rises over the fading portrait for one continuous handoff. */
+/* About rises over the fading portrait for one continuous handoff. */
 @media(prefers-reduced-motion:no-preference) {
-  .hero-scroll-ready .work-section {
+  .hero-scroll-ready .about-section {
     position:relative;
     z-index:4;
     margin-top:calc(-1 * var(--hero-overlap,0px));
     padding-top:42px;
   }
-  .hero-scroll-ready .work-section .section-heading {
+  .hero-scroll-ready .about-section .section-heading {
     min-height:78px;
     margin-bottom:26px;
   }
   .hero-scroll-ready .portrait-area { opacity:calc(1 - var(--hero-scroll,0)); }
   .hero-scroll-ready .hero-name > span { opacity:calc(1 - var(--hero-scroll,0)); }
   @media(max-width:700px) {
-    .hero-scroll-ready .work-section { padding-top:28px; }
-    .hero-scroll-ready .work-section .section-heading { min-height:72px; margin-bottom:20px; }
+    .hero-scroll-ready .about-section { padding-top:28px; }
+    .hero-scroll-ready .about-section .section-heading { min-height:72px; margin-bottom:20px; }
   }
 }
 
@@ -1256,7 +1271,19 @@ only opacity and transforms animate. */
 .about-slash { color:#fff; }
 .about-name { color:#fff; }
 @media(prefers-reduced-motion:no-preference) {
+  .about-motion-ready #about {
+    transform:translateY(calc((1 - var(--about-reveal,0)) * 110px));
+    transition:transform .08s linear;
+    will-change:transform;
+  }
   .about-motion-ready #about .section-heading { overflow:clip; }
+  .about-motion-ready #about.about-panel-visible .section-heading,
+  .about-motion-ready #about.about-panel-visible .about-grid,
+  .about-motion-ready #about.about-panel-visible .background-list {
+    animation:project-panel-in .42s cubic-bezier(.2,.7,.2,1) both;
+  }
+  .about-motion-ready #about.about-panel-visible .about-grid { animation-delay:.08s; }
+  .about-motion-ready #about.about-panel-visible .background-list { animation-delay:.16s; }
   .about-motion-ready .about-word {
     display:inline-block;
     opacity:var(--about-reveal,0);
@@ -1265,6 +1292,11 @@ only opacity and transforms animate. */
   }
   .about-motion-ready .about-word:last-child {
     transform:translateY(calc((1 - var(--about-reveal,0)) * 90px)) rotate(calc((1 - var(--about-reveal,0)) * -9deg));
+  }
+  .about-motion-ready .about-slash {
+    display:inline-block;
+    opacity:var(--about-reveal,0);
+    transform:translateY(calc((1 - var(--about-reveal,0)) * 48px));
   }
   .about-motion-ready #about .ghost {
     transform:translateX(calc((1 - var(--about-reveal,0)) * -45px));
@@ -1334,9 +1366,15 @@ only opacity and transforms animate. */
   color:#000;
 }
 
-/* Keep the primary section headings crisp and editorial. */
-#expertise .section-heading h2 {
-  font-family:Arial, Helvetica, sans-serif;
+/* Match the clean project title treatment and remove the oversized backdrop. */
+#work {
+  padding-bottom:0;
+}
+#expertise {
+  padding-top:0;
+}
+#expertise .section-heading .ghost {
+  display:none;
 }
 
 /* The whole project collection stays hidden until its heading is opened. */

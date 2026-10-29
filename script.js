@@ -140,9 +140,21 @@ const workSection = document.getElementById('work');
 const aboutSection = document.getElementById('about');
 aboutSection.querySelector('.section-heading').removeAttribute('data-reveal');
 aboutSection.querySelector('.about-grid').removeAttribute('data-reveal');
-const aboutItems = [...aboutSection.querySelectorAll('.about-name, .large-copy, .about-copy p')];
+const aboutItems = [...aboutSection.querySelectorAll('.about-name, .large-copy, .about-copy p, .background-row')];
+aboutSection.querySelectorAll('.background-row').forEach(element => element.removeAttribute('data-reveal'));
 aboutItems.forEach(element => element.classList.add('about-animated-item'));
 document.body.classList.add('about-motion-ready');
+if ('IntersectionObserver' in window) {
+  const aboutPanelObserver = new IntersectionObserver(entries => {
+    if (entries[0].isIntersecting) {
+      aboutSection.classList.add('about-panel-visible');
+      aboutPanelObserver.disconnect();
+    }
+  }, { threshold:0.12 });
+  aboutPanelObserver.observe(aboutSection);
+} else {
+  aboutSection.classList.add('about-panel-visible');
+}
 const heroScene = document.createElement('div');
 heroScene.className = 'hero-scroll-scene';
 hero.before(heroScene);
@@ -156,7 +168,7 @@ function measureHero() {
   heroScene.style.setProperty('--hero-top', `${heroTop}px`);
   heroScene.style.setProperty('--hero-scene-height', `${hero.offsetHeight + heroTravel}px`);
   // Bring the next section over the fading hero instead of leaving a blank interval.
-  workSection.style.setProperty('--hero-overlap', `${Math.max(0, hero.offsetHeight - 100)}px`);
+  aboutSection.style.setProperty('--hero-overlap', `${Math.max(0, hero.offsetHeight - 100)}px`);
   requestScroll();
 }
 let framePending = false;
