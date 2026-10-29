@@ -1324,7 +1324,7 @@ only opacity and transforms animate. */
 
 /* Soft, rounded display lettering inspired by the supplied Adorely reference. */
 #work .projects-title {
-  font-family:"Baloo 2", Arial Rounded MT Bold, Arial, sans-serif;
+  font-family:Arial, Helvetica, sans-serif;
   display:inline-block;
   font-size:clamp(24px,3vw,38px);
   font-weight:700;
@@ -1332,6 +1332,11 @@ only opacity and transforms animate. */
   line-height:1.05;
   text-transform:lowercase;
   color:#000;
+}
+
+/* Keep the primary section headings crisp and editorial. */
+#expertise .section-heading h2 {
+  font-family:Arial, Helvetica, sans-serif;
 }
 
 /* The whole project collection stays hidden until its heading is opened. */
