@@ -1303,6 +1303,10 @@ only opacity and transforms animate. */
 .seeker { height:clamp(340px,42vw,580px); }
 @media(max-width:1000px) { .seeker { height:440px; } }
 @media(max-width:700px) { .seeker { height:330px; } }
+@media(prefers-reduced-motion:no-preference) and (max-width:700px) {
+  /* Match Perzo: the preview also shortens as it slides aside. */
+  .project-motion-ready .seeker { height:calc(100% - var(--project-reveal,0) * 40%); }
+}
 
 
 #work .projects-title {
