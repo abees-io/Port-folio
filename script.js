@@ -136,6 +136,11 @@ function measureProjects() {
     project.scene.style.setProperty('--project-scene-height', `${height + project.travel}px`);
     project.card.style.setProperty('--project-top', `${project.top}px`);
   });
+  // Match every thumbnail's starting frame to Perzo, even with a longer description.
+  const previewHeight = projectScenes[0]?.body.offsetHeight || 480;
+  projectScenes.forEach(project => {
+    project.card.style.setProperty('--project-preview-height', `${previewHeight}px`);
+  });
 }
 const heroScene = document.createElement('div');
 heroScene.className = 'hero-scroll-scene';
