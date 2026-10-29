@@ -1339,6 +1339,22 @@ only opacity and transforms animate. */
   display:block;
   border-top:1px solid var(--line);
 }
+#work .projects-disclosure > summary {
+  list-style:none;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:20px;
+  cursor:pointer;
+  padding:10px 0 26px;
+}
+#work .projects-disclosure > summary::-webkit-details-marker { display:none; }
+#work .projects-disclosure > summary > span {
+  font-size:26px;
+  transition:transform .35s ease;
+}
+#work .projects-disclosure[open] > summary > span { transform:rotate(90deg) scale(1.15); }
+#work .projects-disclosure > .projects { animation:project-panel-in .42s cubic-bezier(.2,.7,.2,1) both; }
 #work .project-accordion {
   border-bottom:1px solid var(--line);
   transition:background .35s ease, color .35s ease;
