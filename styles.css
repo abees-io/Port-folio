@@ -1296,21 +1296,23 @@ only opacity and transforms animate. */
 /* Contain the About text's sideways reveal within its own column. */
 .about-copy { overflow:clip; }
 @media(prefers-reduced-motion:no-preference) and (max-width:700px) {
-  /* Long case studies flow beneath their artwork so every paragraph stays readable. */
+  /* The logo slides right and lets long descriptions flow beside and beneath it. */
   .project-motion-ready .project-long-copy { height:auto; }
   .project-motion-ready .project-long-copy .project { position:relative; top:auto; }
-  .project-motion-ready .project-long-copy .project-body { height:auto; display:flex; flex-direction:column; }
+  .project-motion-ready .project-long-copy .project-body { height:auto; display:flow-root; }
   .project-motion-ready .project-long-copy .project-art {
-    position:relative; order:0; width:calc(100% - var(--project-reveal,0) * 12%);
-    height:310px; margin-left:auto;
+    position:relative; float:right; width:calc(100% - var(--project-reveal,0) * 64%);
+    height:calc(310px - var(--project-reveal,0) * 185px);
+    margin:0 0 16px calc(var(--project-reveal,0) * 16px);
   }
   .project-motion-ready .project-long-copy .project-description {
-    position:relative; order:1; top:auto; width:100%; padding:24px 0 0;
+    position:relative; top:auto; width:auto; padding:0;
     transform:translateY(calc((1 - var(--project-reveal,0)) * 30px));
   }
-  .project-motion-ready .project-long-copy .project-description h3 { font-size:24px; }
+  .project-motion-ready .project-long-copy .project-description h3 { font-size:22px; max-width:none; }
   .project-motion-ready .project-long-copy .project-description p { font-size:13px; line-height:1.8; }
   .project-motion-ready .project-long-copy .project-note {
-    position:relative; order:2; bottom:auto; width:100%; margin-top:20px; padding:0; transform:none;
+    position:relative; clear:both; bottom:auto; width:100%; margin-top:20px; padding:0; transform:none;
   }
+  .project-motion-ready .project-long-copy .preview-label { font-size:6px; padding:4px; top:8px; left:6px; right:6px; }
 }
