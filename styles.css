@@ -1,11 +1,4 @@
 /* Monochrome editorial layout, inspired by the supplied scroll reference. */
-@font-face {
-  font-family:'Syne';
-  src:url('assets/fonts/syne-variable.ttf') format('truetype');
-  font-weight:400 800;
-  font-style:normal;
-  font-display:swap;
-}
 :root{
   color-scheme:light;
   --paper:#f8f8f6;
@@ -1308,14 +1301,4 @@ only opacity and transforms animate. */
   @media(max-width:700px) {
     .project-motion-ready .project-art { height:calc(var(--project-preview-height) * (1 - var(--project-reveal,0) * .4)); }
   }
-}
-
-#work .projects-title {
-  font-family:'Syne',Arial,sans-serif;
-  font-weight:600;
-  font-size:clamp(32px,5vw,66px);
-  letter-spacing:-.065em;
-  line-height:1.15;
-  text-transform:lowercase;
-  color:#000;
 }
