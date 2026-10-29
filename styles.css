@@ -1314,3 +1314,14 @@ only opacity and transforms animate. */
     position:relative; order:2; bottom:auto; width:100%; margin-top:20px; padding:0; transform:none;
   }
 }
+
+/* Rounded lowercase letterforms for the work heading. */
+#work .projects-title {
+  font-family:"Arial Rounded MT Bold", "Trebuchet MS", Arial, sans-serif;
+  font-size:clamp(32px,5vw,66px);
+  font-weight:700;
+  letter-spacing:-.065em;
+  line-height:1.15;
+  text-transform:lowercase;
+  color:#000;
+}
