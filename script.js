@@ -104,6 +104,27 @@ services.forEach(service => service.addEventListener('toggle', () => {
   if (service.open) services.forEach(other => { if (other !== service) other.open = false; });
 }));
 
+// Projects use the same accessible one-at-a-time accordion pattern as services.
+const projectAccordions = cards.map(card => {
+  const accordion = document.createElement('details');
+  accordion.className = `${card.className} project-accordion`;
+  accordion.dataset.project = card.dataset.project;
+  const summary = document.createElement('summary');
+  const category = card.querySelector('.project-info p').textContent;
+  const title = card.querySelector('.project-info h3').textContent;
+  const number = card.querySelector('.project-info > span').textContent;
+  summary.innerHTML = `<span class="project-number">${number}</span><span class="project-summary-copy"><small>${category}</small><strong>${title}</strong></span><span class="project-toggle-dot" aria-hidden="true">•</span>`;
+  const panel = document.createElement('div');
+  panel.className = 'project-panel';
+  panel.append(...card.childNodes);
+  accordion.append(summary, panel);
+  card.replaceWith(accordion);
+  return accordion;
+});
+projectAccordions.forEach(accordion => accordion.addEventListener('toggle', () => {
+  if (accordion.open) projectAccordions.forEach(other => { if (other !== accordion) other.open = false; });
+}));
+
 const hero = document.querySelector('.hero');
 const workSection = document.getElementById('work');
 const aboutSection = document.getElementById('about');
@@ -112,35 +133,6 @@ aboutSection.querySelector('.about-grid').removeAttribute('data-reveal');
 const aboutItems = [...aboutSection.querySelectorAll('.about-name, .large-copy, .about-copy p')];
 aboutItems.forEach(element => element.classList.add('about-animated-item'));
 document.body.classList.add('about-motion-ready');
-// Each project gets its own scroll interval for the preview-to-details transition.
-const projectScenes = cards.map(card => {
-  card.removeAttribute('data-reveal');
-  const scene = document.createElement('div');
-  scene.className = 'project-scene';
-  card.before(scene);
-  scene.append(card);
-  const body = document.createElement('div');
-  body.className = 'project-body';
-  body.append(...card.childNodes);
-  card.append(body);
-  const description = body.querySelector('.project-description');
-  if (description) card.classList.add('project-with-description');
-  const longCopy = !!description && description.querySelectorAll('p').length > 2;
-  if (longCopy) scene.classList.add('project-long-copy');
-  return { card, scene, body, description, longCopy, top: 0, travel: 1 };
-});
-document.body.classList.add('project-motion-ready');
-function measureProjects() {
-  projectScenes.forEach(project => {
-    const height = Math.max(mobileLayout.matches ? 380 : 480,
-      (project.description?.offsetHeight || 0) + 110);
-    project.body.style.setProperty('--project-body-height', `${height}px`);
-    project.top = Math.min(60, innerHeight - height - 20);
-    project.travel = Math.max(360, innerHeight * 0.7);
-    project.scene.style.setProperty('--project-scene-height', `${height + project.travel}px`);
-    project.card.style.setProperty('--project-top', `${project.top}px`);
-  });
-}
 const heroScene = document.createElement('div');
 heroScene.className = 'hero-scroll-scene';
 hero.before(heroScene);
@@ -149,7 +141,6 @@ document.body.classList.add('hero-scroll-ready');
 let heroTop = 0;
 let heroTravel = 1;
 function measureHero() {
-  measureProjects();
   heroTop = Math.min(0, innerHeight - hero.offsetHeight - 12);
   heroTravel = Math.max(360, innerHeight * 0.85);
   heroScene.style.setProperty('--hero-top', `${heroTop}px`);
@@ -179,19 +170,6 @@ function renderScroll() {
       (innerHeight * 0.94 - (top - scrollY)) / (innerHeight * 0.34)
     ));
     element.style.setProperty('--item-reveal', progress.toFixed(4));
-  });
-  projectScenes.forEach((project, index) => {
-    // Perzo starts revealing during the handoff, before reaching its sticky position.
-    const flowingCopy = mobileLayout.matches && project.longCopy;
-    const start = flowingCopy ? innerHeight * 0.9
-      : index === 0 ? Math.max(project.top, innerHeight * 0.55) : project.top;
-    const duration = flowingCopy ? innerHeight * 0.45 : project.travel * 0.85 + start - project.top;
-    const progress = Math.max(0, Math.min(1,
-      (start - project.scene.getBoundingClientRect().top) / duration
-    ));
-    const eased = progress * progress * (3 - 2 * progress);
-    project.card.style.setProperty('--project-reveal', eased.toFixed(4));
-    project.card.style.setProperty('--project-details', Math.max(0, Math.min(1, (eased - 0.1) / 0.65)).toFixed(4));
   });
 }
 function requestScroll() {

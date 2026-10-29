@@ -1333,3 +1333,70 @@ only opacity and transforms animate. */
   text-transform:lowercase;
   color:#000;
 }
+
+/* Closed project list: the active project opens like an item in What I Do. */
+#work .projects {
+  display:block;
+  border-top:1px solid var(--line);
+}
+#work .project-accordion {
+  border-bottom:1px solid var(--line);
+  transition:background .35s ease, color .35s ease;
+}
+#work .project-accordion > summary {
+  list-style:none;
+  min-height:118px;
+  padding:20px 22px;
+  display:flex;
+  align-items:center;
+  gap:22px;
+  cursor:pointer;
+}
+#work .project-accordion > summary::-webkit-details-marker { display:none; }
+#work .project-number,
+#work .project-summary-copy small {
+  font-size:10px;
+  letter-spacing:1.1px;
+  color:var(--muted);
+}
+#work .project-number { width:26px; }
+#work .project-summary-copy { display:grid; gap:8px; }
+#work .project-summary-copy strong {
+  font-size:clamp(23px,3.4vw,43px);
+  font-weight:400;
+  letter-spacing:-1.6px;
+  line-height:1;
+}
+#work .project-toggle-dot {
+  margin-left:auto;
+  font-size:25px;
+  transition:transform .35s ease;
+}
+#work .project-accordion[open] {
+  background:#2d2d2d;
+  color:#f8f8f6;
+  border-color:transparent;
+}
+#work .project-accordion[open] .project-number,
+#work .project-accordion[open] .project-summary-copy small { color:#bdbdb9; }
+#work .project-accordion[open] .project-toggle-dot { transform:rotate(90deg) scale(1.2); }
+#work .project-panel {
+  padding:4px 22px 34px 70px;
+  animation:project-panel-in .42s cubic-bezier(.2,.7,.2,1) both;
+}
+#work .project-panel .project-info { display:none; }
+#work .project-accordion[open] .project-description p,
+#work .project-accordion[open] .project-note,
+#work .project-accordion[open] .project-link { color:#fff; }
+#work .project-accordion[open] .project-link { border-color:#8f8f8a; }
+@keyframes project-panel-in {
+  from { opacity:0; transform:translateY(-10px); }
+  to { opacity:1; transform:translateY(0); }
+}
+@media(max-width:700px) {
+  #work .project-accordion > summary { min-height:98px; padding:18px 12px; gap:12px; }
+  #work .project-summary-copy strong { font-size:24px; letter-spacing:-1px; }
+  #work .project-number { width:20px; }
+  #work .project-panel { padding:2px 12px 28px; }
+  #work .project-description { margin-bottom:22px; }
+}
