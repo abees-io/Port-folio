@@ -125,11 +125,7 @@ const projectScenes = cards.map(card => {
   const description = body.querySelector('.project-description');
   if (description) card.classList.add('project-with-description');
   const longCopy = !!description && description.querySelectorAll('p').length > 2;
-  if (longCopy) {
-    scene.classList.add('project-long-copy');
-    // Artwork comes first so mobile text can wrap alongside the compact logo.
-    body.prepend(body.querySelector('.project-art'));
-  }
+  if (longCopy) scene.classList.add('project-long-copy');
   return { card, scene, body, description, longCopy, top: 0, travel: 1 };
 });
 document.body.classList.add('project-motion-ready');
