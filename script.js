@@ -123,9 +123,7 @@ const projectScenes = cards.map(card => {
   card.append(body);
   const description = body.querySelector('.project-description');
   if (description) card.classList.add('project-with-description');
-  const longCopy = !!description && description.querySelectorAll('p').length > 2;
-  if (longCopy) scene.classList.add('project-long-copy');
-  return { card, scene, body, description, longCopy, top: 0, travel: 1 };
+  return { card, scene, body, description, top: 0, travel: 1 };
 });
 document.body.classList.add('project-motion-ready');
 function measureProjects() {
@@ -133,10 +131,15 @@ function measureProjects() {
     const height = Math.max(mobileLayout.matches ? 380 : 480,
       (project.description?.offsetHeight || 0) + 110);
     project.body.style.setProperty('--project-body-height', `${height}px`);
-    project.top = Math.min(60, innerHeight - height - 20);
+    project.top = Math.max(0, Math.min(60, innerHeight - height - 20));
     project.travel = Math.max(360, innerHeight * 0.7);
     project.scene.style.setProperty('--project-scene-height', `${height + project.travel}px`);
     project.card.style.setProperty('--project-top', `${project.top}px`);
+  });
+  // Match every thumbnail's starting frame to Perzo, even with a longer description.
+  const previewHeight = projectScenes[0]?.body.offsetHeight || 480;
+  projectScenes.forEach(project => {
+    project.card.style.setProperty('--project-preview-height', `${previewHeight}px`);
   });
 }
 const heroScene = document.createElement('div');
@@ -180,10 +183,8 @@ function renderScroll() {
   });
   projectScenes.forEach((project, index) => {
     // Perzo starts revealing during the handoff, before reaching its sticky position.
-    const flowingCopy = mobileLayout.matches && project.longCopy;
-    const start = flowingCopy ? innerHeight * 0.9
-      : index === 0 ? Math.max(project.top, innerHeight * 0.55) : project.top;
-    const duration = flowingCopy ? innerHeight * 0.45 : project.travel * 0.85 + start - project.top;
+    const start = index === 0 ? Math.max(project.top, innerHeight * 0.55) : project.top;
+    const duration = project.travel * 0.85 + start - project.top;
     const progress = Math.max(0, Math.min(1,
       (start - project.scene.getBoundingClientRect().top) / duration
     ));
