@@ -1334,6 +1334,29 @@ only opacity and transforms animate. */
   color:#000;
 }
 
+/* The whole project collection stays hidden until its heading is opened. */
+#work .section-heading { min-height:48px; margin-bottom:0; }
+.hero-scroll-ready #work .section-heading { min-height:48px; margin-bottom:0; }
+#work .projects-disclosure { border-bottom:1px solid var(--line); }
+#work .projects-disclosure > summary {
+  list-style:none;
+  min-height:105px;
+  padding:18px 22px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:20px;
+  cursor:pointer;
+  border-top:1px solid var(--line);
+}
+#work .projects-disclosure > summary::-webkit-details-marker { display:none; }
+#work .projects-disclosure > summary > span {
+  font-size:25px;
+  transition:transform .35s ease;
+}
+#work .projects-disclosure[open] > summary > span { transform:rotate(90deg) scale(1.15); }
+#work .projects-disclosure > .projects { animation:project-panel-in .42s cubic-bezier(.2,.7,.2,1) both; }
+
 /* Closed project list: the active project opens like an item in What I Do. */
 #work .projects {
   display:block;
@@ -1394,6 +1417,9 @@ only opacity and transforms animate. */
   to { opacity:1; transform:translateY(0); }
 }
 @media(max-width:700px) {
+  #work .section-heading { min-height:38px; }
+  .hero-scroll-ready #work .section-heading { min-height:38px; margin-bottom:0; }
+  #work .projects-disclosure > summary { min-height:88px; padding:14px 12px; }
   #work .project-accordion > summary { min-height:98px; padding:18px 12px; gap:12px; }
   #work .project-summary-copy strong { font-size:24px; letter-spacing:-1px; }
   #work .project-number { width:20px; }
