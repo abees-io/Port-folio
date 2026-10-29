@@ -125,6 +125,16 @@ projectAccordions.forEach(accordion => accordion.addEventListener('toggle', () =
   if (accordion.open) projectAccordions.forEach(other => { if (other !== accordion) other.open = false; });
 }));
 
+// Keep the two expandable sections predictable on touch screens as well.
+const projectsDisclosure = document.querySelector('.projects-disclosure');
+projectsDisclosure.addEventListener('toggle', () => {
+  if (projectsDisclosure.open) services.forEach(service => { service.open = false; });
+  else projectAccordions.forEach(accordion => { accordion.open = false; });
+});
+services.forEach(service => service.addEventListener('toggle', () => {
+  if (service.open) projectsDisclosure.open = false;
+}));
+
 const hero = document.querySelector('.hero');
 const workSection = document.getElementById('work');
 const aboutSection = document.getElementById('about');
