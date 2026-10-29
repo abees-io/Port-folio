@@ -125,17 +125,6 @@ projectAccordions.forEach(accordion => accordion.addEventListener('toggle', () =
   if (accordion.open) projectAccordions.forEach(other => { if (other !== accordion) other.open = false; });
 }));
 
-// Keep the full project collection inside a closed “my projects” disclosure.
-const projectsList = document.querySelector('#work .projects');
-const projectsTitle = document.querySelector('#work .projects-title');
-const projectsDisclosure = document.createElement('details');
-projectsDisclosure.className = 'projects-disclosure';
-const projectsSummary = document.createElement('summary');
-projectsSummary.append(projectsTitle);
-projectsSummary.insertAdjacentHTML('beforeend', '<span aria-hidden="true">•</span>');
-projectsList.before(projectsDisclosure);
-projectsDisclosure.append(projectsSummary, projectsList);
-
 const hero = document.querySelector('.hero');
 const workSection = document.getElementById('work');
 const aboutSection = document.getElementById('about');
