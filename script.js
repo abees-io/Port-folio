@@ -79,6 +79,8 @@ for (const project of window.portfolioProjects || []) {
   link.setAttribute('aria-label', `View ${project.title} (opens in a new tab)`);
   note.replaceChildren(link);
   card.classList.add('project-live');
+  const previewLabel = card.querySelector('.preview-label');
+  if (previewLabel) previewLabel.textContent = `SELECTED PROJECT / ${String(project.slot).padStart(2, '0')}`;
 }
 
 // Make a configured project's preview clickable as well as its text link.
